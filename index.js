@@ -24,6 +24,20 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+
+    const menuCollection = client.db("bossDB").collection("menu");
+    const reviewCollection = client.db("bossDB").collection("reviews");
+
+    app.get("/menu", async (req, res) => {
+      const cursor = await menuCollection.find().toArray();
+      res.send(cursor);
+    });
+
+    app.get("/reviews", async (req, res) => {
+      const cursor = await reviewCollection.find().toArray();
+      res.send(cursor);
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
@@ -31,7 +45,7 @@ async function run() {
     );
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
