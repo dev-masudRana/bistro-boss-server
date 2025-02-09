@@ -129,7 +129,7 @@ async function run() {
       res.send(result);
     });
 
-    // menu related api
+    // menu related apis
     app.get("/menu", async (req, res) => {
       const cursor = await menuCollection.find().toArray();
       res.send(cursor);
@@ -138,6 +138,13 @@ async function run() {
     app.post("/menu", verifyToken, verifyAdmin, async (req, res) => {
       const item = req.body;
       const result = await menuCollection.insertOne(item);
+      res.send(result);
+    });
+
+    app.delete("/menu/:id", verifyToken, verifyAdmin, async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await menuCollection.deleteOne(query);
       res.send(result);
     });
 
